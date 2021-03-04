@@ -380,6 +380,9 @@ spec:
               --f tls \
               --type client_server \
               --configfile /consul/tls/client/config.json
+
+              mv tls.cert.pem tls.crt
+              mv tls.key.pem tls.key
         volumeMounts:
           - name: consul-client-cert
             mountPath: /consul/tls/client
