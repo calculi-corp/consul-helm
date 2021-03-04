@@ -148,6 +148,7 @@ global:
       secretName: consul-ca-cert
       # The key of the Kubernetes secret.
       secretKey: tls.crt
+      cert:
 
     # A Kubernetes secret containing the private key of the CA to use for
     # TLS communication within the Consul cluster. If you have generated the CA yourself
@@ -168,6 +169,7 @@ global:
       secretName: consul-ca-key
       # The key of the Kubernetes secret.
       secretKey: tls.key
+      key:
 
   # [Enterprise Only] `enableConsulNamespaces` indicates that you are running
   # Consul Enterprise v1.7+ with a valid Consul Enterprise license and would
@@ -1213,7 +1215,7 @@ syncCatalog:
 connectInject:
   # True if you want to enable connect injection. Set to "-" to inherit from
   # global.enabled.
-  enabled: false
+  enabled: true
 
   # Image for consul-k8s that contains the injector
   # @type: string
@@ -1224,7 +1226,7 @@ connectInject:
   # injection annotation (https://consul.io/docs/k8s/connect#consul-hashicorp-com-connect-inject)
   # to opt-in to Connect injection. If this is true, pods can use the same annotation
   # to explicitly opt-out of injection.
-  default: false
+  default: true
 
   # Enables synchronization of Kubernetes health probe status with Consul.
   # NOTE: It is highly recommended to enable TLS with this feature because it requires
