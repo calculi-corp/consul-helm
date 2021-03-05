@@ -639,9 +639,6 @@ client:
   # specified so the clients can join a valid cluster.
   # @type: array<string>
   join:
-    - 10.128.1.11
-    - 10.128.2.12
-    - 10.129.0.13
 
   # An absolute path to a directory on the host machine to use as the Consul
   # client data directory. If set to the empty string or null, the Consul agent
