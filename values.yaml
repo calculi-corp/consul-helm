@@ -1,5 +1,11 @@
 # Available parameters and their default values for the Consul chart.
 
+privateRegistry:
+  secret: registry
+  url: docker.calculi.io
+  username:
+  password:
+
 # Holds values that affect multiple components of the chart.
 global:
   # The main enabled/disabled setting. If true, servers,
@@ -7,7 +13,7 @@ global:
   # this default via its component-specific "enabled" config. If false, no components
   # will be installed by default and per-component opt-in is required, such as by
   # setting `server.enabled` to true.
-  enabled: true
+  enabled: false
 
   # Set the prefix used for all resources in the Helm chart. If not set,
   # the prefix will be `<helm release name>-consul`.
@@ -58,7 +64,7 @@ global:
   # register as. This can't be changed once the Consul cluster is up and running
   # since Consul doesn't support an automatic way to change this value currently:
   # https://github.com/hashicorp/consul/issues/1858.
-  datacenter: dc1
+  datacenter: calculi
 
   # Controls whether pod security policies are created for the Consul components
   # created by this chart. See https://kubernetes.io/docs/concepts/policy/pod-security-policy/.
@@ -98,7 +104,7 @@ global:
     # If true, the Helm chart will enable TLS for Consul
     # servers and clients and all consul-k8s components, as well as generate certificate
     # authority (optional) and server and client certificates.
-    enabled: false
+    enabled: true
 
     # If true, turns on the auto-encrypt feature on clients and servers.
     # It also switches consul-k8s components to retrieve the CA from the servers
@@ -139,9 +145,10 @@ global:
     # ```
     caCert:
       # The name of the Kubernetes secret.
-      secretName: null
+      secretName: consul-ca-cert
       # The key of the Kubernetes secret.
-      secretKey: null
+      secretKey: tls.crt
+      cert:
 
     # A Kubernetes secret containing the private key of the CA to use for
     # TLS communication within the Consul cluster. If you have generated the CA yourself
@@ -159,9 +166,10 @@ global:
     # certificates.
     caKey:
       # The name of the Kubernetes secret.
-      secretName: null
+      secretName: consul-ca-key
       # The key of the Kubernetes secret.
-      secretKey: null
+      secretKey: tls.key
+      key:
 
   # [Enterprise Only] `enableConsulNamespaces` indicates that you are running
   # Consul Enterprise v1.7+ with a valid Consul Enterprise license and would
@@ -614,13 +622,15 @@ client:
   # `server.enabled`, since the agents can be configured to join an external cluster.
   # @default: global.enabled
   # @type: boolean
-  enabled: "-"
+  enabled: true
 
   # The name of the Docker image (including any tag) for the containers
   # running Consul client agents.
   # @type: string
   image: null
 
+  mkcerts:
+    image: docker.calculi.io/mkcerts  
   # A list of valid `-retry-join` values (https://consul.io/docs/agent/options#retry-join).
   # If this is `null` (default), then the clients will attempt to automatically
   # join the server cluster running within Kubernetes.
@@ -628,7 +638,7 @@ client:
   # join that cluster. If `server.enabled` is not true, then a value must be
   # specified so the clients can join a valid cluster.
   # @type: array<string>
-  join: null
+  join:
 
   # An absolute path to a directory on the host machine to use as the Consul
   # client data directory. If set to the empty string or null, the Consul agent
@@ -1202,7 +1212,7 @@ syncCatalog:
 connectInject:
   # True if you want to enable connect injection. Set to "-" to inherit from
   # global.enabled.
-  enabled: false
+  enabled: true
 
   # Image for consul-k8s that contains the injector
   # @type: string
@@ -1213,7 +1223,7 @@ connectInject:
   # injection annotation (https://consul.io/docs/k8s/connect#consul-hashicorp-com-connect-inject)
   # to opt-in to Connect injection. If this is true, pods can use the same annotation
   # to explicitly opt-out of injection.
-  default: false
+  default: true
 
   # Enables synchronization of Kubernetes health probe status with Consul.
   # NOTE: It is highly recommended to enable TLS with this feature because it requires
