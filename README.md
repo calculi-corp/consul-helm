@@ -1,5 +1,9 @@
 # Consul Helm Chart
 
+Calculi users: For deploying this chart, populate the values in the 'deploy.yaml.template' file, rename it to 'deploy.yaml' and deploy with the following command:
+
+$ helm upgrade --install --debug --wait consul-client -f deploy.yaml .
+
 ⭐ **We're looking for feedback on how folks are using Consul on Kubernetes. Please fill out our brief [survey](https://hashicorp.sjc1.qualtrics.com/jfe/form/SV_4MANbw1BUku7YhL)!** ⭐
 
 This repository contains the official HashiCorp Helm chart for installing

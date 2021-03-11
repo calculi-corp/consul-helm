@@ -1,0 +1,15 @@
+privateRegistry:
+  username: 
+  password: 
+global:
+  tls:
+    caKey:
+      key: 
+    caCert:
+      cert: 
+client:
+  join:
+    - 10.128.1.11
+    - 10.128.2.12
+    - 10.129.0.13
+    
